@@ -30,7 +30,7 @@ CopyClip is a Android-based clipboard buffer and manager that retains a user-def
 After seeing the copy card, they should be able to
 > just simply click on a card to copy it to the native Android clipboard
 > so it can be pasted in the current activity.
-> afterwards the buffer will close
+> Afterwards the buffer will close
 
 ## Constraints
 
