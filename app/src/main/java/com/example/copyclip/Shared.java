@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Shared {
-
     public static final String bufferTag = "buffer";
     public static final String pinnedTag = "pinned";
     private static final String maxBufferTag = "maxBuffer";
@@ -34,12 +33,12 @@ public class Shared {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         ArrayList<String> list;
-        if(sharedPrefs.contains(tag)){
+        if (sharedPrefs.contains(tag)) {
             Gson gson = new Gson();
             String json = sharedPrefs.getString(tag, null);
             Type type = new TypeToken<ArrayList<String>>() {}.getType();
             list = gson.fromJson(json, type);
-        }else{
+        } else {
             list = new ArrayList<>();
         }
 
@@ -51,7 +50,7 @@ public class Shared {
         SharedPreferences.Editor editor = sharedPrefs.edit();
 
         ArrayList<String> currentList = getList(tag);
-        if(!currentList.contains(item)){
+        if (!currentList.contains(item)) {
             currentList.add(item);
         }
 
@@ -64,9 +63,9 @@ public class Shared {
 
     public int getMaxBuffer(){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        if(sharedPrefs.contains(maxBufferTag)){
+        if (sharedPrefs.contains(maxBufferTag)) {
             return sharedPrefs.getInt(maxBufferTag, defaultMaxBuffer);
-        }else{
+        } else {
             return defaultMaxBuffer;
         }
     }
@@ -74,15 +73,16 @@ public class Shared {
     public void setMaxBuffer(int max){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPrefs.edit();
+
         editor.putInt(maxBufferTag, max);
         editor.apply();
     }
 
     public int getMaxPinned(){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        if(sharedPrefs.contains(maxPinnedTag)){
+        if (sharedPrefs.contains(maxPinnedTag)) {
             return sharedPrefs.getInt(maxPinnedTag, defaultMaxPinned);
-        }else{
+        } else {
             return defaultMaxPinned;
         }
     }
@@ -90,6 +90,7 @@ public class Shared {
     public void setMaxPinned(int max){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPrefs.edit();
+
         editor.putInt(maxPinnedTag, max);
         editor.apply();
     }
@@ -111,32 +112,46 @@ public class Shared {
         private int enqueueCount = 0;
         private int dequeueCount = 0;
 
-        public OnePointerQueue() {}
+        public OnePointerQueue() {
 
-        public boolean isEmpty() { return size == 0; }
+        }
+
+        public boolean isEmpty() {
+            return size == 0;
+        }
 
         public void enqueue(String item) {
             Node old = last;
             last = new Node();
             last.item = item;
-            if (isEmpty()) last.next = last;
-            else {
+            if (isEmpty()) {
+                last.next = last;
+            } else {
                 last.next = old.next;
                 old.next = last;
             }
+
             size++;
         }
 
         public String dequeue() {
             if (isEmpty()) throw new NullPointerException("Queue is empty");
+
             String item = last.next.item;
-            if (last == last.next) last = null;
-            else last.next = last.next.next;
+            if (last == last.next) {
+                last = null;
+            } else {
+                last.next = last.next.next;
+            }
+
             size--;
+
             return item;
         }
 
-        public int size() { return size; }
+        public int size() {
+            return size;
+        }
 
         public Iterator<String> iterator() {
             return new Iterator<String>() {
@@ -150,6 +165,7 @@ public class Shared {
                     if ((numEnqueue != enqueueCount) || (numDequeue != dequeueCount)) {
                         throw new ConcurrentModificationException();
                     }
+
                     return counter <= size;
                 }
 
@@ -159,6 +175,7 @@ public class Shared {
                     if ((numEnqueue != enqueueCount) || (numDequeue != dequeueCount)) {
                         throw new ConcurrentModificationException();
                     }
+
                     String item = current.item;
                     current = current.next;
                     ++counter;
@@ -168,7 +185,7 @@ public class Shared {
         }
 
         public void removeOld(int maxSize) {
-            if (size >= maxSize){
+            if (size >= maxSize) {
                 this.dequeue();
             }
         }

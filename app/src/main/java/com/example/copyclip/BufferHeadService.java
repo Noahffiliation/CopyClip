@@ -1,6 +1,5 @@
 package com.example.copyclip;
 
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -43,7 +42,7 @@ public class BufferHeadService extends Service {
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         bufferHead = inflater.inflate(R.layout.buffer_overlay, null);
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -60,11 +59,13 @@ public class BufferHeadService extends Service {
         this.shared = new Shared(getApplicationContext());
         this.buffer = shared.getList("buffer");
         this.adapter = new CustomListAdapter();
+
         ListView listView = bufferHead.findViewById(R.id.list);
         listView.setAdapter(this.adapter);
 
         final Button buttonRecent = bufferHead.findViewById(R.id.buttonRecent);
         final Button buttonPinned = bufferHead.findViewById(R.id.buttonPinned);
+
         buttonRecent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +111,7 @@ public class BufferHeadService extends Service {
             if (buffer.size() != 0) {
                 return buffer.size();
             }
+
             return 0;
         }
 
@@ -139,23 +141,21 @@ public class BufferHeadService extends Service {
             holder.ref = position;
             holder.text.setText(buffer.get(holder.ref));
 
-            if(shared.getList("pinned").contains(buffer.get(holder.ref))){
+            if (shared.getList("pinned").contains(buffer.get(holder.ref))) {
                 holder.pin.setColorFilter(getColor(R.color.colorPrimary));
-            }else{
+            } else {
                 holder.pin.setColorFilter(getColor(R.color.iconGray));
             }
-
 
             holder.pin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(shared.getList("pinned").contains(buffer.get(holder.ref))){
+                    if (shared.getList("pinned").contains(buffer.get(holder.ref))) {
                         adapter.notifyDataSetChanged();
-                    }else{
+                    } else {
                         shared.updateList(getApplicationContext(), "pinned", buffer.get(holder.ref));
                         adapter.notifyDataSetChanged();
                     }
-
                 }
             });
 
@@ -167,7 +167,6 @@ public class BufferHeadService extends Service {
                 }
             });
 
-
             return convertView;
         }
 
@@ -176,7 +175,5 @@ public class BufferHeadService extends Service {
             android.support.v7.widget.AppCompatImageButton pin;
             int ref;
         }
-
-
     }
 }

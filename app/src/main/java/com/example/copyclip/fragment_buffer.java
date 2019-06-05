@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-
 public class fragment_buffer extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +34,6 @@ public class fragment_buffer extends Fragment {
     public fragment_buffer() {
         // Required empty public constructor
     }
-
 
     // TODO: Rename and change types and number of parameters
     public static fragment_buffer newInstance(String param1, String param2) {
@@ -65,9 +63,9 @@ public class fragment_buffer extends Fragment {
         final Shared shared = new Shared(getActivity().getApplicationContext());
         this.buffer = shared.getList(bufferTag);
         this.adapter = new CustomListAdapter();
-        ListView listView = (ListView) view.findViewById(R.id.card_list);
-        listView.setAdapter(this.adapter);
 
+        ListView listView = view.findViewById(R.id.card_list);
+        listView.setAdapter(this.adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,7 +74,6 @@ public class fragment_buffer extends Fragment {
                 Toast.makeText(getActivity(), "Copied to Clipboard", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         return view;
     }
@@ -110,15 +107,10 @@ public class fragment_buffer extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-
     @Override
     public void onResume(){
         super.onResume();
     }
-
-
-
-
 
     private class CustomListAdapter extends BaseAdapter {
         @Override
@@ -144,23 +136,19 @@ public class fragment_buffer extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
-            //ViewHolder holder = null;
             final ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.card_item, null);
-                holder.text = (TextView) convertView.findViewById(R.id.text);
+                holder.text = convertView.findViewById(R.id.text);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-
             holder.ref = position;
             holder.text.setText(buffer.get(holder.ref));
-
 
             return convertView;
         }
@@ -169,8 +157,5 @@ public class fragment_buffer extends Fragment {
             TextView text;
             int ref;
         }
-
-
     }
-
 }
