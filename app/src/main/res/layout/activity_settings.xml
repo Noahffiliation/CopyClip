@@ -95,29 +95,4 @@
         android:fontFamily="sans-serif"
         android:textSize="14sp"/>
 
-    <TextView
-        android:id="@+id/maxPinnedItems"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/maxBufferSize"
-        android:layout_below="@+id/maxBufferSize"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="Maximum Pinned items"
-        android:textColor="@android:color/background_dark"
-        android:fontFamily="sans-serif"
-        android:textSize="16sp"/>
-
-    <EditText
-        android:id="@+id/maxPinnedSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/maxPinnedItems"
-        android:layout_alignStart="@+id/maxPinnedItems"
-        android:layout_below="@+id/maxPinnedItems"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:inputType="number"/>
-
 </RelativeLayout>

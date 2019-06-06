@@ -10,17 +10,17 @@
             android:layout_height="100dp"
             android:background="@android:color/white">
 
-            <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/pin"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="12dp"
-                android:background="@android:color/white"
-                android:scaleType="fitXY"
-                android:tint="#bcbcbc"
-                app:srcCompat="@drawable/ic_pin"/>
+            <!--<android.support.v7.widget.AppCompatImageButton-->
+                <!--android:id="@+id/pin"-->
+                <!--android:layout_width="24dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginTop="12dp"-->
+                <!--android:background="@android:color/white"-->
+                <!--android:scaleType="fitXY"-->
+                <!--android:tint="#bcbcbc"-->
+                <!--app:srcCompat="@drawable/ic_pin"/>-->
 
             <TextView
                 android:id="@+id/text"

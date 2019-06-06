@@ -20,11 +20,9 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         findViewById(R.id.saveButton).setOnClickListener(this);
 
         EditText maxBufferSizeField = findViewById(R.id.maxBufferSize);
-        EditText maxPinnedSizeField =  findViewById(R.id.maxPinnedSize);
 
         // A "hack" to convert the getMax functions from ints to strings for setText
         maxBufferSizeField.setText(shared.getMaxBuffer() + "");
-        maxPinnedSizeField.setText(shared.getMaxPinned() + "");
     }
 
     @Override
@@ -42,7 +40,6 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
 
     private void saveFields(){
         EditText maxBuffer = findViewById(R.id.maxBufferSize);
-        EditText maxPinned = findViewById(R.id.maxPinnedSize);
 
         if (tryParseInt(maxBuffer.getText().toString())) {
             shared.setMaxBuffer(Integer.parseInt(maxBuffer.getText().toString()));
@@ -50,13 +47,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
             maxBuffer.setError("Must be a number");
         }
 
-        if (tryParseInt(maxPinned.getText().toString())) {
-            shared.setMaxPinned(Integer.parseInt(maxPinned.getText().toString()));
-        } else {
-            maxPinned.setError("Must be a number");
-        }
-
-        Toast.makeText(this, shared.getMaxBuffer() + " : " +shared.getMaxPinned(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Settings Saved", Toast.LENGTH_SHORT).show();
     }
 
     boolean tryParseInt(String value) {

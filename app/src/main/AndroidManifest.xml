@@ -21,15 +21,5 @@
         <service
             android:name=".MainService"
             android:enabled="true"></service>
-        <service android:name=".BufferHeadService"></service>
-        <receiver
-            android:name=".ServiceRestart"
-            android:enabled="true"
-            android:exported="true"
-            android:label="RestartServiceWhenStopped">
-            <intent-filter>
-                <action android:name="com.evergreen.ActivityRecognition.RestartSensor" />
-            </intent-filter>
-        </receiver>
     </application>
 </manifest>

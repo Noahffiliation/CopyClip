@@ -24,7 +24,7 @@ public class MainService extends Service {
         final ClipboardManager.OnPrimaryClipChangedListener mPrimaryChangeListener
                 = new ClipboardManager.OnPrimaryClipChangedListener() {
             public void onPrimaryClipChanged() {
-                Log.e("SERVICE COPY", tester.getText().toString());
+                Log.d("SERVICE COPY", tester.getText().toString());
                 Shared shared = new Shared(getApplicationContext());
                 shared.updateList(getApplicationContext(), shared.bufferTag, tester.getText().toString());
             }

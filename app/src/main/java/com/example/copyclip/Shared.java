@@ -11,17 +11,14 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class Shared {
     public static final String bufferTag = "buffer";
     public static final String pinnedTag = "pinned";
     private static final String maxBufferTag = "maxBuffer";
     private static final String maxPinnedTag = "maxPinned";
-    private static final int defaultMaxBuffer = 5;
-    private static final int defaultMaxPinned = 5;
+    private static final int defaultMaxBuffer = 10;
+    private static final int defaultMaxPinned = 10;
 
     private Context context;
 
@@ -100,97 +97,4 @@ public class Shared {
         ClipData clip = ClipData.newPlainText(item, item);
         clipboard.setPrimaryClip(clip);
     }
-
-    private class OnePointerQueue {
-        private class Node {
-            String item;
-            Node next;
-        }
-
-        private Node last;
-        private int size = 0;
-        private int enqueueCount = 0;
-        private int dequeueCount = 0;
-
-        public OnePointerQueue() {
-
-        }
-
-        public boolean isEmpty() {
-            return size == 0;
-        }
-
-        public void enqueue(String item) {
-            Node old = last;
-            last = new Node();
-            last.item = item;
-            if (isEmpty()) {
-                last.next = last;
-            } else {
-                last.next = old.next;
-                old.next = last;
-            }
-
-            size++;
-        }
-
-        public String dequeue() {
-            if (isEmpty()) throw new NullPointerException("Queue is empty");
-
-            String item = last.next.item;
-            if (last == last.next) {
-                last = null;
-            } else {
-                last.next = last.next.next;
-            }
-
-            size--;
-
-            return item;
-        }
-
-        public int size() {
-            return size;
-        }
-
-        public Iterator<String> iterator() {
-            return new Iterator<String>() {
-                private Node current = last.next;
-                private int counter = 0;
-                private int numEnqueue = enqueueCount;
-                private int numDequeue = dequeueCount;
-
-                @Override
-                public boolean hasNext() {
-                    if ((numEnqueue != enqueueCount) || (numDequeue != dequeueCount)) {
-                        throw new ConcurrentModificationException();
-                    }
-
-                    return counter <= size;
-                }
-
-                @Override()
-                public String next() {
-                    if (!hasNext()) throw new NoSuchElementException();
-                    if ((numEnqueue != enqueueCount) || (numDequeue != dequeueCount)) {
-                        throw new ConcurrentModificationException();
-                    }
-
-                    String item = current.item;
-                    current = current.next;
-                    ++counter;
-                    return item;
-                }
-            };
-        }
-
-        public void removeOld(int maxSize) {
-            if (size >= maxSize) {
-                this.dequeue();
-            }
-        }
-    }
-
-    OnePointerQueue bufferQueue = new OnePointerQueue();
-    OnePointerQueue pinnedQueue= new OnePointerQueue();
 }

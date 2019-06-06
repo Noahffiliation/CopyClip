@@ -5,9 +5,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -20,11 +17,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity
-    implements View.OnClickListener, fragment_buffer.OnFragmentInteractionListener, fragment_pinned.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Shared shared;
-    public final static int REQUEST_CODE = -1010101;
 
     Intent mServiceIntent;
     private MainService mSensorService;
@@ -42,7 +37,6 @@ public class MainActivity extends AppCompatActivity
         displayNotification("CopyClip", "Display Buffer");
 
         ctx = this;
-//        setContentView(R.layout.activity_main);
         mSensorService = new MainService(getCtx());
         mServiceIntent = new Intent(getCtx(), mSensorService.getClass());
 
@@ -86,11 +80,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.settings:
@@ -109,8 +98,6 @@ public class MainActivity extends AppCompatActivity
             switch (position) {
                 case 0:
                     return new fragment_buffer();
-                case 1:
-                    return new fragment_pinned();
                 default:
                     return new fragment_buffer();
             }
@@ -118,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            return 2;
+            return 1;
         }
 
         @Override
@@ -126,36 +113,8 @@ public class MainActivity extends AppCompatActivity
             switch (position) {
                 case 0:
                     return "Recent";
-                case 1:
                 default:
-                    return "Pinned";
-            }
-        }
-    }
-
-    private void getPermissionOverlay() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!android.provider.Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, 101);
-            } else {
-                startService(new Intent(getApplicationContext(), BufferHeadService.class));
-            }
-        } else {
-            startService(new Intent(getApplicationContext(), BufferHeadService.class));
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 101: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.i("Permission", "Granted");
-                    startService(new Intent(getApplicationContext(), BufferHeadService.class));
-                } else {
-                    Log.i("Permission", "Denied");
-                }
+                    return "Recent";
             }
         }
     }
