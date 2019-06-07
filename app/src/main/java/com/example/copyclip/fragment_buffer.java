@@ -2,6 +2,7 @@ package com.example.copyclip;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,18 @@ public class fragment_buffer extends Fragment {
 
         ListView listView = view.findViewById(R.id.card_list);
         listView.setAdapter(this.adapter);
+
+        final TextView textView = view.findViewById(R.id.text);
+        if (textView != null) {
+            view.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shared.remove(getContext(), shared.bufferTag, textView.getText().toString());
+                    Log.d("fragment_buffer", "onClick: getIem" + textView.getText().toString());
+                    Toast.makeText(getActivity(), "Item Removed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

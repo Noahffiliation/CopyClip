@@ -1,8 +1,6 @@
 package com.example.copyclip;
 
 import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,11 +15,9 @@ import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
     private Shared shared;
-
-    Intent mServiceIntent;
     private MainService mSensorService;
+    Intent mServiceIntent;
     Context ctx;
 
     public Context getCtx() {
@@ -33,8 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        displayNotification("CopyClip", "Display Buffer");
 
         ctx = this;
         mSensorService = new MainService(getCtx());
@@ -75,17 +68,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        Log.i ("isMyServiceRunning?", false + "");
+        Log.i("isMyServiceRunning?", false + "");
         return false;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.settings:
                 Intent settingsIntent = new Intent(this, Settings.class);
                 startActivity(settingsIntent);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager viewPager = findViewById(R.id.pager);
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            toolbar.setTitle("Evergreen");
+        }
+
+        viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager);
+
+        findViewById(R.id.settings).setOnClickListener(this);
     }
 
     public class SectionPagerAdapter extends FragmentPagerAdapter {
@@ -117,17 +129,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     return "Recent";
             }
         }
-    }
-
-    public void displayNotification(String title, String message) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_pin)
-                .setContentTitle(title)
-                .setContentText(message);
-
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification n = mBuilder.build();
-        n.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-        mNotificationManager.notify(001, n);
     }
 }
